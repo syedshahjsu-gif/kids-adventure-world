@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Adventure Learning World</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">🧭</div>
+      <div>
+        <h1>Adventure Learning World</h1>
+        <p class="subtitle">Profiles • Levels • Worlds • Rewards ⭐</p>
+      </div>
+    </div>
+
+    <div class="hud">
+      <div class="pill" title="Stars earned">⭐ <span id="starsCount">0</span></div>
+
+      <button class="btn ghost" id="speakToggle" title="Voice on/off">🔊 Voice: ON</button>
+
+      <select id="profileSelect" class="select">
+        <option value="">Loading…</option>
+      </select>
+
+      <select id="levelSelect" class="select" title="Difficulty level">
+        <option value="5-7">Level: 5–7</option>
+        <option value="8-10">Level: 8–10</option>
+      </select>
+
+      <button class="btn ghost" id="resetBtn" title="Reset current profile">Reset</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- ADVENTURE MAP (HOME) -->
+    <section id="screenHome" class="screen active">
+      <div class="card hero">
+        <div class="heroLeft">
+          <h2 id="welcomeTitle">Welcome!</h2>
+          <p>
+            Choose a world. Play games. Learn science. Create art.
+            Earn ⭐ stars and badges.
+          </p>
+
+          <div class="mascotRow" aria-label="Mascot guide">
+            <div class="mascot" id="mascotFace">🤖</div>
+            <div class="speech" id="mascotSpeech">Hi Explorer! Pick a world on the map to begin.</div>
+          </div>
+
+          <div class="row">
+            <div class="miniCard">
+              <div class="miniTitle">Choose avatar</div>
+              <div class="avatarRow" id="avatarRow"></div>
+              <div class="muted small">Click an avatar to select.</div>
+            </div>
+
+            <div class="miniCard">
+              <div class="miniTitle">Badges</div>
+              <div class="badgesRow" id="badgesRow"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="heroRight">
+          <div class="bigCharacter" id="bigAvatar">🦊</div>
+          <div class="smallNote" id="voiceHint">Voice instructions are ON.</div>
+          <div class="smallNote" id="levelHint">Level: 5–7</div>
+        </div>
+      </div>
+
+      <div class="mapWrap" aria-label="Adventure map">
+        <div class="mapPath" aria-hidden="true"></div>
+
+        <div class="grid worlds">
+        <button class="worldCard color1" data-world="math">
+          <div class="worldIcon">🦖</div>
+          <div class="worldTitle">Dinosaur Island</div>
+          <div class="worldDesc">Math Treasure Hunt</div>
+        </button>
+
+        <button class="worldCard color2" data-world="words">
+          <div class="worldIcon">🏴‍☠️</div>
+          <div class="worldTitle">Pirate Ocean</div>
+          <div class="worldDesc">Word Match</div>
+        </button>
+
+        <button class="worldCard color3" data-world="draw">
+          <div class="worldIcon">🎨</div>
+          <div class="worldTitle">Castle Creativity</div>
+          <div class="worldDesc">Draw + Stickers</div>
+        </button>
+
+        <button class="worldCard color4" data-world="space">
+          <div class="worldIcon">🚀</div>
+          <div class="worldTitle">Space Science World</div>
+          <div class="worldDesc">Facts + Quiz</div>
+        </button>
+
+        <button class="worldCard color5" data-world="memory">
+          <div class="worldIcon">🧩</div>
+          <div class="worldTitle">Memory Game</div>
+          <div class="worldDesc">Match the cards</div>
+        </button>
+
+        <button class="worldCard color6" data-world="shapes">
+          <div class="worldIcon">🌴</div>
+          <div class="worldTitle">Jungle Shapes</div>
+          <div class="worldDesc">Find the right shape</div>
+        </button>
+
+        <button class="worldCard color7" data-world="tap">
+          <div class="worldIcon">☁️</div>
+          <div class="worldTitle">Sky Tap Sprint</div>
+          <div class="worldDesc">Tap fast to win</div>
+        </button>
+
+        <button class="worldCard color8" data-world="pattern">
+          <div class="worldIcon">🎵</div>
+          <div class="worldTitle">Pattern Parade</div>
+          <div class="worldDesc">Finish the sequence</div>
+        </button>
+
+        <button class="worldCard" data-world="parent">
+          <div class="worldIcon">🧑‍👩‍👧‍👦</div>
+          <div class="worldTitle">Parent Dashboard</div>
+          <div class="worldDesc">Progress overview</div>
+        </button>
+      </div>
+      </div>
+
+      <div class="card note">
+        <h3>How it works</h3>
+        <ul>
+          <li>👤 Switch profiles using the top dropdown</li>
+          <li>✅ Pick level: <b>5–7</b> or <b>8–10</b></li>
+          <li>🚀 Space World teaches fun facts + quick quiz</li>
+          <li>🧩 Memory game changes difficulty by level</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SHAPES -->
+    <section id="screenShapes" class="screen">
+      <div class="card">
+        <div class="screenHeader">
+          <h2>🌴 Jungle Shapes</h2>
+          <div class="headerBtns">
+            <button class="btn ghost" id="shapesSpeakBtn">🎙 Read</button>
+            <button class="btn" data-nav="home">⬅ Map</button>
+          </div>
+        </div>
+        <p class="muted">Find the shape that matches the word. Earn ⭐ stars!</p>
+
+        <div class="gamePanel">
+          <div class="questionBox">
+            <div class="questionLabel">Find:</div>
+            <div class="question" id="shapesTarget">—</div>
+          </div>
+
+          <div class="answers" id="shapesAnswers"></div>
+
+          <div class="resultRow">
+            <div id="shapesFeedback" class="feedback">Pick the right shape 👆</div>
+            <div class="chest" id="shapesTotem">🗿</div>
+          </div>
+
+          <div class="actionsRow">
+            <button class="btn ghost" id="shapesNewBtn">New Round</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAP -->
+    <section id="screenTap" class="screen">
+      <div class="card">
+        <div class="screenHeader">
+          <h2>☁️ Sky Tap Sprint</h2>
+          <div class="headerBtns">
+            <button class="btn ghost" id="tapSpeakBtn">🎙 Read</button>
+            <button class="btn" data-nav="home">⬅ Map</button>
+          </div>
+        </div>
+        <p class="muted">Tap the flying star before time runs out!</p>
+
+        <div class="gamePanel">
+          <div class="tapTop">
+            <div class="pill">Time: <span id="tapTime">15</span>s</div>
+            <div class="pill">Hits: <span id="tapHits">0</span></div>
+            <button class="btn ghost" id="tapStartBtn">Start</button>
+          </div>
+
+          <div class="tapArena" id="tapArena" aria-label="Tap arena">
+            <button class="tapTarget" id="tapTarget" type="button" aria-label="Tap target">⭐</button>
+          </div>
+
+          <div class="resultRow" style="margin-top:12px;">
+            <div id="tapFeedback" class="feedback">Press Start 👆</div>
+            <div class="chest" id="tapCloud">☁️</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PATTERN -->
+    <section id="screenPattern" class="screen">
+      <div class="card">
+        <div class="screenHeader">
+          <h2>🎵 Pattern Parade</h2>
+          <div class="headerBtns">
+            <button class="btn ghost" id="patternSpeakBtn">🎙 Read</button>
+            <button class="btn" data-nav="home">⬅ Map</button>
+          </div>
+        </div>
+        <p class="muted">Finish the emoji sequence. Get ⭐ stars for correct answers!</p>
+
+        <div class="gamePanel">
+          <div class="patternRow" aria-label="Pattern">
+            <div class="patternChip" id="p1">—</div>
+            <div class="patternChip" id="p2">—</div>
+            <div class="patternChip" id="p3">—</div>
+            <div class="patternChip missing" id="p4">?</div>
+          </div>
+
+          <div class="answers" id="patternAnswers"></div>
+
+          <div class="resultRow">
+            <div id="patternFeedback" class="feedback">Pick what comes next 👆</div>
+            <div class="chest" id="patternDrum">🥁</div>
+          </div>
+
+          <div class="actionsRow">
+            <button class="btn ghost" id="patternNewBtn">New Pattern</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MATH -->
+    <section id="screenMath" class="screen">
+      <div class="card">
+        <div class="screenHeader">
+          <h2>🦖 Dinosaur Island: Math Treasure Hunt</h2>
+          <div class="headerBtns">
+            <button class="btn ghost" id="mathSpeakBtn">🎙 Read</button>
+            <button class="btn" data-nav="home">⬅ Map</button>
+          </div>
+        </div>
+        <p class="muted" id="mathSubtitle">Answer correctly to open the treasure chest!</p>
+
+        <div class="gamePanel">
+          <div class="questionBox">
+            <div class="questionLabel">Solve:</div>
+            <div class="question" id="mathQuestion">—</div>
+          </div>
+
+          <div class="answers" id="mathAnswers"></div>
+
+          <div class="resultRow">
+            <div id="mathFeedback" class="feedback">Pick an answer 👆</div>
+            <div class="chest" id="chest">🧰</div>
+          </div>
+
+          <div class="actionsRow">
+            <button class="btn ghost" id="mathNewBtn">New Question</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WORDS -->
+    <section id="screenWords" class="screen">
+      <div class="card">
+        <div class="screenHeader">
+          <h2>🏴‍☠️ Pirate Ocean: Word Match</h2>
+          <div class="headerBtns">
+            <button class="btn ghost" id="wordSpeakBtn">🎙 Read</button>
+            <button class="btn" data-nav="home">⬅ Map</button>
+          </div>
+        </div>
+        <p class="muted">Match the word to the correct picture.</p>
+
+        <div class="gamePanel">
+          <div class="questionBox">
+            <div class="questionLabel">Find:</div>
+            <div class="question" id="wordTarget">—</div>
+          </div>
+
+          <div class="answers" id="wordAnswers"></div>
+
+          <div class="resultRow">
+            <div id="wordFeedback" class="feedback">Pick the right picture 👆</div>
+            <div class="chest" id="parrot">🦜</div>
+          </div>
+
+          <div class="actionsRow">
+            <button class="btn ghost" id="wordNewBtn">New Round</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DRAW -->
+    <section id="screenDraw" class="screen">
+      <div class="card">
+        <div class="screenHeader">
+          <h2>🎨 Castle Creativity: Draw + Stickers</h2>
+          <div class="headerBtns">
+            <button class="btn ghost" id="drawSpeakBtn">🎙 Read</button>
+            <button class="btn" data-nav="home">⬅ Map</button>
+          </div>
+        </div>
+        <p class="muted">Draw with your mouse. Add stickers. Save your picture!</p>
+
+        <div class="drawWrap">
+          <div class="toolBar">
+            <button class="tool" data-color="#111">🖊️ Black</button>
+            <button class="tool" data-color="#1d74ff">🔵 Blue</button>
+            <button class="tool" data-color="#0fbf8a">🟢 Green</button>
+            <button class="tool" data-color="#ff4d6d">🔴 Red</button>
+
+            <div class="spacer"></div>
+
+            <button class="tool" data-sticker="⭐">⭐</button>
+            <button class="tool" data-sticker="🦖">🦖</button>
+            <button class="tool" data-sticker="🚀">🚀</button>
+            <button class="tool" data-sticker="🌈">🌈</button>
+            <button class="tool" data-sticker="🐶">🐶</button>
+
+            <div class="spacer"></div>
+
+            <button class="btn ghost" id="clearCanvas">Clear</button>
+            <button class="btn" id="saveCanvas">Save + ⭐</button>
+          </div>
+
+          <div class="canvasCard">
+            <canvas id="canvas" width="900" height="520"></canvas>
+          </div>
+
+          <div class="card note inner">
+            <h3>Reward</h3>
+            <p class="muted">Each save gives <b>⭐ +2</b> stars.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPACE -->
+    <section id="screenSpace" class="screen">
+      <div class="card">
+        <div class="screenHeader">
+          <h2>🚀 Space Science World</h2>
+          <div class="headerBtns">
+            <button class="btn ghost" id="spaceSpeakBtn">🎙 Read</button>
+            <button class="btn" data-nav="home">⬅ Map</button>
+          </div>
+        </div>
+        <p class="muted">Learn a fun fact, then answer a quick question!</p>
+
+        <div class="gamePanel">
+          <div class="spaceFact" id="spaceFact">—</div>
+
+          <div class="questionBox" style="margin-top:12px;">
+            <div class="questionLabel">Question:</div>
+            <div class="question" id="spaceQ">—</div>
+          </div>
+
+          <div class="answers" id="spaceAnswers"></div>
+
+          <div class="resultRow">
+            <div id="spaceFeedback" class="feedback">Choose an answer 👆</div>
+            <div class="chest" id="rocketBox">🚀</div>
+          </div>
+
+          <div class="actionsRow">
+            <button class="btn ghost" id="spaceNewBtn">New Space Mission</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MEMORY -->
+    <section id="screenMemory" class="screen">
+      <div class="card">
+        <div class="screenHeader">
+          <h2>🧩 Memory Game</h2>
+          <div class="headerBtns">
+            <button class="btn ghost" id="memorySpeakBtn">🎙 Read</button>
+            <button class="btn" data-nav="home">⬅ Map</button>
+          </div>
+        </div>
+
+        <div class="memoryTop">
+          <div class="pill">Moves: <span id="memMoves">0</span></div>
+          <div class="pill">Matches: <span id="memMatches">0</span></div>
+          <button class="btn ghost" id="memNewBtn">New Game</button>
+        </div>
+
+        <div class="memoryGrid" id="memoryGrid"></div>
+
+        <div class="card note inner" style="margin-top:12px;">
+          <p class="muted" id="memHint">
+            Level 5–7: fewer cards • Level 8–10: more cards.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PARENT -->
+    <section id="screenParent" class="screen">
+      <div class="card">
+        <div class="screenHeader">
+          <h2>🧑‍👩‍👧‍👦 Parent Dashboard</h2>
+          <button class="btn" data-nav="home">⬅ Map</button>
+        </div>
+
+        <div class="grid dashboard">
+          <div class="dashCard">
+            <div class="dashTitle">Total Stars</div>
+            <div class="dashBig" id="dashStars">0</div>
+            <div class="muted">for this profile</div>
+          </div>
+
+          <div class="dashCard">
+            <div class="dashTitle">Math</div>
+            <div class="dashBig"><span id="dashMathCorrect">0</span> ✅</div>
+            <div class="muted"><span id="dashMathTries">0</span> attempts</div>
+          </div>
+
+          <div class="dashCard">
+            <div class="dashTitle">Words</div>
+            <div class="dashBig"><span id="dashWordCorrect">0</span> ✅</div>
+            <div class="muted"><span id="dashWordTries">0</span> attempts</div>
+          </div>
+
+          <div class="dashCard">
+            <div class="dashTitle">Space Quiz</div>
+            <div class="dashBig"><span id="dashSpaceCorrect">0</span> ✅</div>
+            <div class="muted"><span id="dashSpaceTries">0</span> attempts</div>
+          </div>
+
+          <div class="dashCard">
+            <div class="dashTitle">Memory</div>
+            <div class="dashBig"><span id="dashMemWins">0</span> 🏁</div>
+            <div class="muted"><span id="dashMemMoves">0</span> total moves</div>
+          </div>
+
+          <div class="dashCard">
+            <div class="dashTitle">Drawings</div>
+            <div class="dashBig"><span id="dashDrawSaves">0</span> 🖼️</div>
+            <div class="muted">saved drawings</div>
+          </div>
+
+          <div class="dashCard" style="grid-column: 1 / -1;">
+            <div class="dashTitle">Badges</div>
+            <div class="badgeList" id="dashBadges"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>Made for ages 5–10 • Big buttons • Profiles • Levels</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
