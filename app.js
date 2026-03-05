@@ -773,8 +773,6 @@ function flipCard(btn) {
       speak("You won! Great memory!");
       // reward: higher stars for harder level
       addStars(app.level === "5-7" ? 4 : 6);
-      checkBadges();
-      saveApp();
     }
     return;
   }
@@ -958,6 +956,12 @@ function renderDashboard() {
   $("#dashSpaceTries").textContent = String(ps().space.tries);
   $("#dashMemWins").textContent = String(ps().memory.wins);
   $("#dashMemMoves").textContent = String(ps().memory.moves);
+  $("#dashShapeCorrect").textContent = String(ps().shapes.correct);
+  $("#dashShapeTries").textContent = String(ps().shapes.tries);
+  $("#dashTapBest").textContent = String(ps().tap.bestHits);
+  $("#dashTapRounds").textContent = String(ps().tap.rounds);
+  $("#dashPatternCorrect").textContent = String(ps().pattern.correct);
+  $("#dashPatternTries").textContent = String(ps().pattern.tries);
 
   const box = $("#dashBadges");
   box.innerHTML = "";

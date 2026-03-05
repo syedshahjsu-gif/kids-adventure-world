@@ -172,8 +172,7 @@ h1{ margin:0; font-size:18px; }
   overflow: hidden;
 }
 .worldCard:hover{ transform: translateY(-2px); box-shadow: 0 14px 30px rgba(17, 38, 66, 0.10); }
-.worldIcon{ font-size:34px; }
-.worldIcon{ animation: floaty 2.6s ease-in-out infinite; }
+.worldIcon{ font-size:34px; animation: floaty 2.6s ease-in-out infinite; }
 .worldTitle{ font-weight:1000; margin-top:10px; }
 .worldDesc{ color:var(--muted); font-size:13px; margin-top:2px; }
 
@@ -211,7 +210,10 @@ h1{ margin:0; font-size:18px; }
 .worldCard.color2::before,
 .worldCard.color3::before,
 .worldCard.color4::before,
-.worldCard.color5::before{
+.worldCard.color5::before,
+.worldCard.color6::before,
+.worldCard.color7::before,
+.worldCard.color8::before{
   content:"";
   position:absolute; inset:-40px -40px auto auto;
   width:110px; height:110px;
@@ -470,4 +472,6 @@ h1{ margin:0; font-size:18px; }
   .answers{ grid-template-columns: 1fr; }
   .row{ grid-template-columns: 1fr; }
   .memoryGrid{ grid-template-columns: repeat(3, 1fr); }
+  .topbar{ flex-direction:column; align-items:stretch; gap:10px; }
+  .hud{ justify-content:center; }
 }
